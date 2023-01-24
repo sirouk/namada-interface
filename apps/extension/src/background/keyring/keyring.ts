@@ -149,6 +149,10 @@ export class KeyRing {
       });
       await this._keyStore.append(mnemonicStore);
 
+      // TODO: Generate random bytes and encrypt for password verification:
+      // ....
+      // ....
+
       this._password = password;
       return true;
     } catch (e) {
@@ -372,9 +376,7 @@ export class KeyRing {
     }
   }
 
-  async encodeRevealPk(
-    signer: string,
-  ): Promise<Uint8Array> {
+  async encodeRevealPk(signer: string): Promise<Uint8Array> {
     if (!this._password) {
       throw new Error("Not authenticated!");
     }
@@ -394,21 +396,21 @@ export class KeyRing {
   }
 
   private getPrivateKey(account: KeyStore, password: string): string {
-      const decrypted = crypto.decrypt(account, password);
-      let private_key = decrypted;
+    const decrypted = crypto.decrypt(account, password);
+    let private_key = decrypted;
 
-      // If the account type is a Mnemonic, derive a private key
-      // from associated derived address (root account):
-      if (account.type === AccountType.Mnemonic) {
-        const { path } = account;
-        const mnemonic = Mnemonic.from_phrase(decrypted);
-        const bip44 = new HDWallet(mnemonic.to_seed());
-        const { coinType } = chains[this.chainId].bip44;
-        const derivationPath = `m/44'/${coinType}'/${path.account}'/${path.change}`;
-        const derived = bip44.derive(derivationPath);
-        private_key = derived.private().to_hex();
-      }
+    // If the account type is a Mnemonic, derive a private key
+    // from associated derived address (root account):
+    if (account.type === AccountType.Mnemonic) {
+      const { path } = account;
+      const mnemonic = Mnemonic.from_phrase(decrypted);
+      const bip44 = new HDWallet(mnemonic.to_seed());
+      const { coinType } = chains[this.chainId].bip44;
+      const derivationPath = `m/44'/${coinType}'/${path.account}'/${path.change}`;
+      const derived = bip44.derive(derivationPath);
+      private_key = derived.private().to_hex();
+    }
 
-      return private_key;
+    return private_key;
   }
 }
