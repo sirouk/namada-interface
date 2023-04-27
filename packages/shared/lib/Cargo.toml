@@ -26,12 +26,14 @@ namada = { path = "/home/mj/Projects/heliax/namada/shared", default-features = f
 prost = "0.9.0"
 prost-types = "0.9.0"
 rand = "0.8.5"
-rayon = "=1.5.1"
+rayon ={version = "=1.5.1", optional = true}
 serde = "1.0.144"
 serde_json = "1.0"
 thiserror = "^1"
 wasm-bindgen = "0.2.84"
 wasm-bindgen-futures = "0.4.33"
+wasm-bindgen-rayon = {version = "1.0", optional = true}
+crossbeam-channel = { version = "0.5.1", optional = true }
 console_error_panic_hook = "0.1.6"
 
 [dependencies.web-sys]
@@ -48,7 +50,11 @@ features = [
 [dev-dependencies]
 wasm-bindgen-test = "0.3.13"
 
+[features]
+parallel = ["rayon", "wasm-bindgen-rayon", "crossbeam-channel"] 
+
 [patch.crates-io]
+bellman = { path = "/home/mj/Projects/heliax/bellman", default-features = false, features = ["groth16"] }
 funty = { git = "https://github.com/ferrilab/funty.git", rev = "7ef0d890fbcd8b3def1635ac1a877fc298488446" }
 # patched to a commit on the `eth-bridge-integration` branch of our fork
 tendermint = {git="https://github.com/heliaxdev/tendermint-rs.git", rev="679227ab920dbb45cdd5acb97f49c4fe2ebb5a44"}

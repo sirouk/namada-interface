@@ -1,3 +1,4 @@
+use crate::{rpc_client::HttpClient, sdk::masp::WebShieldedUtils};
 use js_sys::Uint8Array;
 use namada::ledger::{
     masp::ShieldedContext,
@@ -5,11 +6,92 @@ use namada::ledger::{
 };
 use wasm_bindgen::{prelude::wasm_bindgen, JsError, JsValue};
 
-use crate::{rpc_client::HttpClient, sdk::masp::WebShieldedUtils};
-
 mod masp;
 mod tx;
 mod wallet;
+
+#[cfg(feature = "parallel")]
+mod implementation {
+    use crossbeam_channel::{bounded, unbounded, Receiver, Sender};
+    use rayon::prelude::*;
+    use wasm_bindgen::{prelude::wasm_bindgen, JsError, JsValue};
+
+    #[wasm_bindgen]
+    pub fn rayon_test() {
+        let (ss, rr) = bounded(1);
+        let (ss2, rr2) = bounded(1);
+        let (ss3, rr3) = bounded(1);
+        let (ss4, rr4) = bounded(1);
+        let (ss5, rr5) = bounded(1);
+        let (ss6, rr6) = bounded(1);
+        let (ss7, rr7) = bounded(1);
+        let (ss8, rr8) = bounded(1);
+
+        rayon::spawn(move || {
+            for n in 1..11111111 {}
+            ss.send(5).unwrap();
+            drop(ss);
+        });
+
+        rayon::spawn(move || {
+            for n in 1..11111111 {}
+            ss2.send(15).unwrap();
+            drop(ss2);
+        });
+
+        rayon::spawn(move || {
+            for n in 1..11111 {}
+            ss3.send(25).unwrap();
+            drop(ss3);
+        });
+
+        rayon::spawn(move || {
+            for n in 1..11111 {}
+            ss4.send(25).unwrap();
+            drop(ss4);
+        });
+
+        rayon::spawn(move || {
+            for n in 1..11111 {}
+            ss5.send(25).unwrap();
+            drop(ss5);
+        });
+
+        rayon::spawn(move || {
+            for n in 1..11111 {}
+            ss6.send(25).unwrap();
+            drop(ss6);
+        });
+
+        rayon::spawn(move || {
+            for n in 1..11111 {}
+            ss7.send(25).unwrap();
+            drop(ss7);
+        });
+
+        rayon::spawn(move || {
+            for n in 1..11111 {}
+            ss8.send(25).unwrap();
+            drop(ss8);
+        });
+
+        let rr = rr.recv().unwrap();
+        let rr2 = rr2.recv().unwrap();
+        let rr3 = rr3.recv().unwrap();
+        let rr4 = rr4.recv().unwrap();
+        let rr5 = rr5.recv().unwrap();
+        let rr6 = rr6.recv().unwrap();
+        let rr7 = rr7.recv().unwrap();
+        let rr8 = rr8.recv().unwrap();
+        web_sys::console::log_1(
+            &format!(
+                "r1 {}, r2 {}, r3 {}, r4 {}, r5 {}, r6 {}, r7 {}, r8 {}",
+                rr, rr2, rr3, rr4, rr5, rr6, rr7, rr8
+            )
+            .into(),
+        );
+    }
+}
 
 #[wasm_bindgen]
 pub struct Sdk {

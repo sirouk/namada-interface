@@ -73,7 +73,7 @@ if (NODE_ENV === "development") {
 
 module.exports = {
   mode: NODE_ENV,
-  target: "web",
+  target: "webworker",
   devtool: false,
   entry: {
     content: "./src/content",
@@ -89,6 +89,7 @@ module.exports = {
     publicPath: "",
     path: resolve(__dirname, `./build/${TARGET}`),
     filename: "[name].anoma.js",
+    chunkFormat: "array-push",
   },
   module: {
     rules: [

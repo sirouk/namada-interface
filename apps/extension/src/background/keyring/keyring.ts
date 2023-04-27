@@ -14,7 +14,7 @@ import {
   ExtendedViewingKey,
   PaymentAddress,
   Sdk,
-} from "@anoma/shared";
+} from "@anoma/shared/src/index";
 import { IStore, Store } from "@anoma/storage";
 import { AccountType, Bip44Path, DerivedAccount } from "@anoma/types";
 import { chains } from "@anoma/chains";

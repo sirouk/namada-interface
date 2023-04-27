@@ -972,6 +972,7 @@ dependencies = [
  "serde",
  "sha2 0.9.9",
  "subtle",
+ "web-sys",
  "zcash_encoding",
  "zcash_primitives",
 ]

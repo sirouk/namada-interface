@@ -1,5 +1,7 @@
 import { defaultChainId, chains } from "@anoma/chains";
-import { Sdk } from "@anoma/shared";
+// import { Sdk } from "@anoma/shared/src/index-mt";
+// import { init as initShared } from "@anoma/shared/src/init-mt";
+import { Sdk } from "@anoma/shared/src/index";
 import { init as initShared } from "@anoma/shared/src/init";
 import { IndexedDBKVStore } from "@anoma/storage";
 import { fromBase64 } from "@cosmjs/encoding";

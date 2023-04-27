@@ -8,7 +8,9 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "wasm:build": "./scripts/build.sh",
+    "build:wasm-st": "wasm-pack build lib --target web --out-dir ../src/shared/st",
+    "build:wasm-mt": "cross-env RUSTFLAGS=\"-C target-feature=+atomics,+bulk-memory,+mutable-globals\" rustup run nightly-2022-12-12 wasm-pack build lib --target web --out-dir ../src/shared/mt -- --features parallel -Z build-std=panic_abort,std",
+    "wasm:build": "yarn build:wasm-st & yarn build:wasm-mt",
     "wasm:build:node": "./scripts/build-test.sh",
     "test": "yarn wasm:build:node && yarn jest",
     "test:watch": "yarn test --watch"
@@ -20,6 +22,7 @@
     "@babel/preset-typescript": "^7.18.6",
     "@types/jest": "^29.0.3",
     "babel-jest": "^29.0.3",
+    "cross-env": "^7.0.3",
     "jest": "^29.0.3",
     "ts-jest": "^29.0.1",
     "ts-node": "^10.9.1"

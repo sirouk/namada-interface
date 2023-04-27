@@ -1,4 +1,4 @@
-import initWasm, { InitOutput } from "./shared/shared";
-import wasm from "./shared/shared_bg.wasm";
+import initWasm, { InitOutput } from "./shared/st";
+import wasm from "./shared/st/shared_bg.wasm";
 
 export const init: () => Promise<InitOutput> = async () => await initWasm(wasm);
