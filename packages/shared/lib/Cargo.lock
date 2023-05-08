@@ -1879,7 +1879,6 @@ dependencies = [
  "toml",
  "tracing",
  "wasmparser",
- "web-sys",
  "zeroize",
 ]
 
@@ -2838,6 +2837,7 @@ name = "shared"
 version = "0.1.0"
 dependencies = [
  "async-trait",
+ "bellman",
  "borsh",
  "chrono",
  "console_error_panic_hook",
@@ -2848,12 +2848,14 @@ dependencies = [
  "masp_primitives",
  "masp_proofs",
  "namada",
+ "pairing",
  "prost",
  "prost-types",
  "rand 0.8.5",
  "rayon",
  "serde",
  "serde_json",
+ "sha2 0.9.9",
  "thiserror",
  "wasm-bindgen",
  "wasm-bindgen-futures",
