@@ -61,7 +61,7 @@ if (NODE_ENV === "development") {
       entries: {
         contentScript: ["content"],
         background: ["background"],
-        extensionPage: ["popup", "setup"],
+        extensionPage: ["popup", "setup", "approvals"],
       },
     })
   );
@@ -76,6 +76,7 @@ module.exports = {
     background: "./src/background",
     popup: "./src/App",
     setup: "./src/Setup",
+    approvals: "./src/Approvals",
     injected: "./src/content/injected.ts",
   },
   output: {
@@ -146,7 +147,7 @@ module.exports = {
     hints: "warning",
     maxAssetSize: 200000,
     maxEntrypointSize: 400000,
-    assetFilter: function (assetFilename) {
+    assetFilter: function(assetFilename) {
       assetFilename.endsWith(".wasm");
     },
   },

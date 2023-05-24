@@ -1,4 +1,6 @@
+import browser from "webextension-polyfill";
 import { fromBase64, toBase64 } from "@cosmjs/encoding";
+
 import { PhraseSize } from "@anoma/crypto";
 import { KVStore } from "@anoma/storage";
 import { AccountType, Bip44Path, DerivedAccount } from "@anoma/types";
