@@ -351,7 +351,8 @@ export class KeyRing {
 
   private async *getAddressWithBalance(
     seed: VecU8Pointer,
-    parentId: string
+    parentId: string,
+    type: AccountType
   ): AsyncGenerator<
     {
       path: Bip44Path;
@@ -362,6 +363,11 @@ export class KeyRing {
   > {
     let index = 0;
     let emptyBalanceCount = 0;
+    const deriveFn = (
+      type === AccountType.PrivateKey
+        ? this.deriveTransparentAccount
+        : this.deriveShieldedAccount
+    ).bind(this);
 
     const get = async (
       index: number
@@ -373,13 +379,9 @@ export class KeyRing {
       // Cloning the seed, otherwise it gets zeroized in deriveTransparentAccount
       const seedClone = seed.clone();
       const path = { account: 0, change: 0, index };
-      const accountInfo = this.deriveTransparentAccount(
-        seedClone,
-        path,
-        parentId
-      );
+      const accountInfo = deriveFn(seedClone, path, parentId);
       const balances: [string, string][] = await this.query.query_balance(
-        accountInfo.address
+        accountInfo.owner
       );
 
       return { path, info: accountInfo, balances };
@@ -406,7 +408,11 @@ export class KeyRing {
 
     const { seed, parentId } = await this.getParentSeed(this._password);
 
-    for await (const value of this.getAddressWithBalance(seed, parentId)) {
+    for await (const value of this.getAddressWithBalance(
+      seed,
+      parentId,
+      AccountType.PrivateKey
+    )) {
       const alias = `Address - ${value.path.index}`;
       const { info, path } = value;
       await this.persistAccount(
@@ -419,6 +425,25 @@ export class KeyRing {
       );
       await this.addSecretKey(info.text, this._password, alias, parentId);
     }
+
+    for await (const value of this.getAddressWithBalance(
+      seed,
+      parentId,
+      AccountType.ShieldedKeys
+    )) {
+      const alias = `Shielded Address - ${value.path.index}`;
+      const { info, path } = value;
+      await this.persistAccount(
+        this._password,
+        path,
+        parentId,
+        AccountType.ShieldedKeys,
+        alias,
+        info
+      );
+      await this.addSpendingKey(info.text, this._password, alias, parentId);
+    }
+
     seed.free();
   }
 
@@ -459,13 +484,13 @@ export class KeyRing {
     alias: string,
     derivedAccountInfo: DerivedAccountInfo
   ): Promise<DerivedAccount> {
-    const { address, id, text } = derivedAccountInfo;
+    const { address, id, text, owner } = derivedAccountInfo;
 
     this._keyStore.append(
       crypto.encrypt({
         alias,
         address,
-        owner: address,
+        owner,
         chainId: this.chainId,
         id,
         parentId,
