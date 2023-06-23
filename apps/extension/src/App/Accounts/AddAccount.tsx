@@ -28,6 +28,7 @@ import {
   InputContainer,
   Label,
   ShieldedToggleContainer,
+  ShieldedToggleLabel,
 } from "./AddAccount.components";
 import { TopLevelRoute } from "App/types";
 import { useAuth } from "hooks";
@@ -146,6 +147,7 @@ const AddAccount: React.FC<Props> = ({
   const [formError, setFormError] = useState("");
   const [formStatus, setFormStatus] = useState(Status.Idle);
   const [isTransparent, setIsTransparent] = useState(true);
+  const [isPinned, setIsPinned] = useState<boolean>();
   const [index, setIndex] = useState(
     findNextIndex(
       accounts,
@@ -216,7 +218,8 @@ const AddAccount: React.FC<Props> = ({
               index,
             },
             isTransparent ? AccountType.PrivateKey : AccountType.ShieldedKeys,
-            alias
+            alias,
+            isPinned
           )
         );
       setAccounts([...accounts, derivedAccount]);
@@ -290,6 +293,17 @@ const AddAccount: React.FC<Props> = ({
                     onChange={(e) => handleNumericChange(e, setIndex)}
                     onFocus={handleFocus}
                   />
+                  {!isTransparent && (
+                    <ShieldedToggleContainer>
+                      <Toggle
+                        onClick={() => setIsPinned(!isPinned)}
+                        checked={!isPinned}
+                      />
+                      <ShieldedToggleLabel className={isPinned ? "active" : ""}>
+                        Pin address
+                      </ShieldedToggleLabel>
+                    </ShieldedToggleContainer>
+                  )}
                 </Bip44PathContainer>
               </Label>
             </InputContainer>
@@ -297,7 +311,10 @@ const AddAccount: React.FC<Props> = ({
               <ShieldedToggleContainer>
                 <span>Transparent&nbsp;</span>
                 <Toggle
-                  onClick={() => setIsTransparent(!isTransparent)}
+                  onClick={() => {
+                    setIsTransparent(!isTransparent);
+                    setIsPinned(!isTransparent ? undefined : false);
+                  }}
                   checked={isTransparent}
                 />
                 <span>&nbsp;Shielded</span>

@@ -36,11 +36,11 @@ import {
     ({ data }: { data: SubmitTransferMessageData }) => {
       sdk
         .submit_transfer(fromBase64(data.txMsg), data.password, data.xsk)
-        .then(() => postMessage(TRANSFER_SUCCESSFUL_MSG))
-        .catch(() => postMessage(TRANSFER_FAILED_MSG));
+        .then(() => postMessage({ msg: TRANSFER_SUCCESSFUL_MSG }))
+        .catch((e) => postMessage({ msg: TRANSFER_FAILED_MSG, data: e }));
     },
     false
   );
 
-  postMessage(INIT_MSG);
+  postMessage({ msg: INIT_MSG });
 })();

@@ -256,7 +256,8 @@ export class DeriveAccountMsg extends Message<DerivedAccount> {
   constructor(
     public readonly path: Bip44Path,
     public readonly accountType: AccountType,
-    public readonly alias: string
+    public readonly alias: string,
+    public readonly isPinned?: boolean
   ) {
     super();
   }
@@ -267,6 +268,14 @@ export class DeriveAccountMsg extends Message<DerivedAccount> {
     }
     if (!this.path) {
       throw new Error("A Bip44Path object must be provided!");
+    }
+    if (
+      [AccountType.PrivateKey, AccountType.Mnemonic].includes(
+        this.accountType
+      ) &&
+      typeof this.isPinned !== "undefined"
+    ) {
+      throw new Error("We can't pin transparent accounts");
     }
 
     const { account, change } = this.path;

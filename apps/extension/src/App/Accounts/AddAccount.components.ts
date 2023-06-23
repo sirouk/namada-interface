@@ -13,7 +13,7 @@ export const AddAccountForm = styled.div`
   box-sizing: border-box;
 
   input {
-    width: 92%;
+    flex-grow: 1;
   }
 `;
 
@@ -27,6 +27,7 @@ export const Bip44PathContainer = styled.div`
   width: 100%;
   justify-content: start;
   align-items: center;
+  column-gap: 5px;
 `;
 
 export const Bip44PathDelimiter = styled.span`
@@ -102,8 +103,16 @@ export const ButtonsContainer = styled.div`
 
 export const ShieldedToggleContainer = styled.div`
   display: flex;
-  width: 100%;
   justify-content: flex-end;
   align-items: center;
   padding: 4px 0 0;
+  flex-grow: 0;
+`;
+
+export const ShieldedToggleLabel = styled.span`
+  margin-left: 5px;
+  font-size: 12px;
+  &.active {
+    color: ${(props) => props.theme.colors.primary.main80};
+  }
 `;

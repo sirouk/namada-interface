@@ -137,9 +137,15 @@ export class KeyRingService {
   async deriveAccount(
     path: Bip44Path,
     type: AccountType,
-    alias: string
+    alias: string,
+    isPinned?: boolean
   ): Promise<DerivedAccount> {
-    const account = await this._keyRing.deriveAccount(path, type, alias);
+    const account = await this._keyRing.deriveAccount(
+      path,
+      type,
+      alias,
+      isPinned
+    );
     await this.broadcastAccountsChanged();
     return account;
   }

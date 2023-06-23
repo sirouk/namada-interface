@@ -12,12 +12,13 @@ export const init = (
 ): void => {
   const w = new Worker("submit-transfer-web-worker.anoma.js");
 
-  w.onmessage = (e: MessageEvent<Msg>) => {
-    if (e.data === INIT_MSG) {
+  w.onmessage = (e: MessageEvent<{ msg: Msg; data: unknown }>) => {
+    if (e.data.msg === INIT_MSG) {
       w.postMessage(data);
-    } else if (e.data === TRANSFER_SUCCESSFUL_MSG) {
+    } else if (e.data.msg === TRANSFER_SUCCESSFUL_MSG) {
       transferCompletedHandler(data.msgId, true).then(() => w.terminate());
-    } else if (e.data === TRANSFER_FAILED_MSG) {
+    } else if (e.data.msg === TRANSFER_FAILED_MSG) {
+      console.error(e.data.data);
       transferCompletedHandler(data.msgId, false).then(() => w.terminate());
     } else {
       console.warn("Not supporeted msg type.");

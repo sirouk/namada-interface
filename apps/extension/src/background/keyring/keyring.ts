@@ -317,7 +317,8 @@ export class KeyRing {
   public deriveShieldedAccount(
     seed: VecU8Pointer,
     path: Bip44Path,
-    parentId: string
+    parentId: string,
+    isPinned?: boolean
   ): DerivedAccountInfo {
     const { index = 0 } = path;
     const id = getId("shielded-account", parentId, index);
@@ -332,7 +333,8 @@ export class KeyRing {
     // Deserialize and encode keys and address
     const extendedSpendingKey = new ExtendedSpendingKey(xsk);
     const extendedViewingKey = new ExtendedViewingKey(xfvk);
-    const address = new PaymentAddress(payment_address).encode();
+    const address = new PaymentAddress(payment_address);
+    const encodedAddress = address.pinned(!!isPinned).encode();
     const spendingKey = extendedSpendingKey.encode();
     const viewingKey = extendedViewingKey.encode();
 
@@ -342,7 +344,7 @@ export class KeyRing {
     extendedSpendingKey.free();
 
     return {
-      address,
+      address: encodedAddress,
       id,
       owner: viewingKey,
       text: JSON.stringify({ spendingKey, viewingKey }),
@@ -379,7 +381,7 @@ export class KeyRing {
       // Cloning the seed, otherwise it gets zeroized in deriveTransparentAccount
       const seedClone = seed.clone();
       const path = { account: 0, change: 0, index };
-      const accountInfo = deriveFn(seedClone, path, parentId);
+      const accountInfo = deriveFn(seedClone, path, parentId, false);
       const balances: [string, string][] = await this.query.query_balance(
         accountInfo.owner
       );
@@ -515,7 +517,8 @@ export class KeyRing {
   public async deriveAccount(
     path: Bip44Path,
     type: AccountType,
-    alias: string
+    alias: string,
+    isPinned?: boolean
   ): Promise<DerivedAccount> {
     if (!this._password) {
       throw new Error("No password is set!");
@@ -530,7 +533,8 @@ export class KeyRing {
     ).bind(this);
 
     const { seed, parentId } = await this.getParentSeed(this._password);
-    const info = deriveFn(seed, path, parentId);
+    const info = deriveFn(seed, path, parentId, isPinned);
+
     const derivedAccount = await this.persistAccount(
       this._password,
       path,
