@@ -8,6 +8,7 @@ use namada::sdk::rpc::{
 };
 use namada::types::control_flow::ProceedOrElse;
 use namada::types::eth_bridge_pool::TransferToEthereum;
+use namada::types::io::StdIo;
 use namada::types::{
     address::Address,
     masp::ExtendedViewingKey,
@@ -271,7 +272,7 @@ impl Query {
 
         let epoch = query_epoch(&self.client).await?;
         let balance = shielded
-            .compute_exchanged_balance::<_, WebIo>(&self.client, &viewing_key, epoch)
+            .compute_exchanged_balance(&self.client, &viewing_key, epoch)
             .await?
             .expect("context should contain viewing key");
         let decoded_balance = shielded
@@ -294,7 +295,7 @@ impl Query {
         for (token, amount) in result {
             mapped_result.push((
                 token.clone(),
-                format_denominated_amount::<_, WebIo>(&self.client, &token, amount)
+                format_denominated_amount(&self.client, &token, amount)
                     .await
                     .clone(),
             ))
@@ -319,7 +320,7 @@ impl Query {
         &self,
         owner_addresses: Box<[JsValue]>,
     ) -> Result<JsValue, JsError> {
-        let bridge_pool = query_signed_bridge_pool::<_, WebIo>(&self.client)
+        let bridge_pool = query_signed_bridge_pool(&self.client, &StdIo)
             .await
             .proceed_or_else(|| JsError::new("TODO:"))?;
 
