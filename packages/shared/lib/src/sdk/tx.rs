@@ -3,7 +3,7 @@ use std::{path::PathBuf, str::FromStr};
 use borsh::{BorshDeserialize, BorshSerialize};
 use namada::{
     ibc::core::ics24_host::identifier::{ChannelId, PortId},
-    sdk::args::{self, InputAmount},
+    namada_sdk::args::{self, InputAmount},
     types::{
         address::Address,
         chain::ChainId,
@@ -150,10 +150,7 @@ pub fn withdraw_tx_args(
 ) -> Result<(args::Withdraw, Option<Address>), JsError> {
     let withdraw_msg = SubmitWithdrawMsg::try_from_slice(withdraw_msg)?;
 
-    let SubmitWithdrawMsg {
-        source,
-        validator,
-    } = withdraw_msg;
+    let SubmitWithdrawMsg { source, validator } = withdraw_msg;
 
     let source = Address::from_str(&source)?;
     let validator = Address::from_str(&validator)?;
@@ -329,7 +326,8 @@ pub fn eth_bridge_transfer_tx_args(
     tx_msg: &[u8],
     password: Option<String>,
 ) -> Result<(args::EthereumBridgePool, Option<Address>), JsError> {
-    let eth_bridge_transfer_msg = SubmitEthBridgeTransferMsg::try_from_slice(eth_bridge_transfer_msg)?;
+    let eth_bridge_transfer_msg =
+        SubmitEthBridgeTransferMsg::try_from_slice(eth_bridge_transfer_msg)?;
     let SubmitEthBridgeTransferMsg {
         nut,
         asset,
