@@ -6,7 +6,6 @@ use namada::namada_sdk::masp::ShieldedContext;
 use namada::namada_sdk::rpc::{
     format_denominated_amount, get_public_key_at, get_token_balance, query_epoch,
 };
-use namada::types::control_flow::ProceedOrElse;
 use namada::types::eth_bridge_pool::TransferToEthereum;
 use namada::types::{
     address::Address,
@@ -319,9 +318,7 @@ impl Query {
         &self,
         owner_addresses: Box<[JsValue]>,
     ) -> Result<JsValue, JsError> {
-        let bridge_pool = query_signed_bridge_pool(&self.client, &WebIo)
-            .await
-            .proceed_or_else(|| JsError::new("TODO:"))?;
+        let bridge_pool = query_signed_bridge_pool(&self.client, &WebIo).await?;
 
         let owner_addresses: Vec<Address> = owner_addresses
             .into_iter()

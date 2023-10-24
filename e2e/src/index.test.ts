@@ -183,7 +183,8 @@ describe("Namada", () => {
     });
   });
 
-  describe("bridge", () => {
+  // TODO: we need to upload contract first
+  describe.skip("bridge", () => {
     test("add to bridge pool", async () => {
       const nam = startNamada(namRefs);
       await importAccount(browser, page);
@@ -325,7 +326,7 @@ describe("Namada", () => {
 
       // Wait for new epoch
       page.on("dialog", async (dialog) => {
-        await new Promise((resolve) => setTimeout(resolve, 60000));
+        await new Promise((resolve) => setTimeout(resolve, 70000));
         await dialog.accept();
       });
 
