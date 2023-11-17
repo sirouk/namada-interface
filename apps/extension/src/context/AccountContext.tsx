@@ -32,9 +32,11 @@ type AccountContextType = {
   fetchAll: () => Promise<DerivedAccount[]>;
   getById: (accountId: string) => DerivedAccount | undefined;
   revealMnemonic: (accountId: string) => Promise<string>;
-  changeActiveAccountId: (
+  changeActiveAccount: (
     accountId: string,
-    accountType: ParentAccount
+    accountType: ParentAccount,
+    address: string,
+    publicKey?: string
   ) => void;
 };
 
@@ -47,13 +49,15 @@ const createAccountContext = (): AccountContextType => ({
   revealMnemonic: async (_accountId: string) => "",
   error: "",
   status: undefined,
-  remove: async (_accountId: string) => {},
+  remove: async (_accountId: string) => { },
   rename: async (_id: string, _alias: string) => undefined,
   fetchAll: async () => [],
-  changeActiveAccountId: (
+  changeActiveAccount: (
     _accountId: string,
-    _accountType: ParentAccount
-  ) => {},
+    _accountType: ParentAccount,
+    _address: string,
+    _publicKey?: string
+  ) => { },
 });
 
 export const AccountContext = createContext<AccountContextType>(
@@ -107,9 +111,11 @@ export const AccountContextWrapper = ({
 
     // parentAccounts not updated yet
     if (accountId === activeAccountId && parentAccounts.length > 1) {
-      await changeActiveAccountId(
+      changeActiveAccount(
         parentAccounts[0].id,
-        parentAccounts[0].type as ParentAccount
+        parentAccounts[0].type as ParentAccount,
+        parentAccounts[0].address,
+        parentAccounts[0].publicKey
       );
     }
 
@@ -142,14 +148,16 @@ export const AccountContextWrapper = ({
     return account;
   };
 
-  const changeActiveAccountId = (
+  const changeActiveAccount = (
     accountId: string,
-    accountType: ParentAccount
+    accountType: ParentAccount,
+    address: string,
+    publicKey?: string
   ): void => {
     setActiveAccountId(accountId);
     requester.sendMessage(
       Ports.Background,
-      new SetActiveAccountMsg(accountId, accountType)
+      new SetActiveAccountMsg(accountId, accountType, address, publicKey)
     );
   };
 
@@ -187,7 +195,7 @@ export const AccountContextWrapper = ({
         remove,
         fetchAll,
         getById,
-        changeActiveAccountId,
+        changeActiveAccount,
         revealMnemonic,
         rename,
       }}

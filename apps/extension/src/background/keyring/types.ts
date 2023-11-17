@@ -33,8 +33,10 @@ export type TabStore = {
 
 export type ParentAccount = AccountType.Mnemonic | AccountType.Ledger;
 
-export type ActiveAccountStore = {
-  id: string;
+export type ActiveAccountStore = Pick<
+  AccountStore,
+  "id" | "address" | "publicKey"
+> & {
   type: ParentAccount;
 };
 

@@ -97,7 +97,10 @@ export class KeyRingService {
     accountSecret: AccountSecret,
     alias: string
   ): Promise<AccountStore | false> {
-    const results = await this._keyRing.storeAccountSecret(accountSecret, alias);
+    const results = await this._keyRing.storeAccountSecret(
+      accountSecret,
+      alias
+    );
     this.broadcaster.updateAccounts();
     return results;
   }
@@ -385,8 +388,10 @@ export class KeyRingService {
     }
   }
 
-  async setActiveAccount(id: string, type: ParentAccount): Promise<void> {
-    await this._keyRing.setActiveAccount(id, type);
+  async setActiveAccount(account: ActiveAccountStore): Promise<void> {
+    const { id, type, address, publicKey } = account;
+    await this._keyRing.setActiveAccount({ id, type, address, publicKey });
+    // TODO: Return active account
     this.broadcaster.updateAccounts();
   }
 

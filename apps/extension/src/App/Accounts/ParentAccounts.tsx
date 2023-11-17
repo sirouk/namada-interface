@@ -23,7 +23,7 @@ import { SettingsHeader } from "./ParentAccounts.components";
 export const ParentAccounts = (): JSX.Element => {
   const navigate = useNavigate();
   const { lock } = useVaultContext();
-  const { activeAccountId, parentAccounts, changeActiveAccountId } =
+  const { activeAccountId, parentAccounts, changeActiveAccount } =
     useContext(AccountContext);
 
   const goToSetupPage = (): void => {
@@ -71,9 +71,11 @@ export const ParentAccounts = (): JSX.Element => {
               onViewAccount={() => goToViewAccount(account)}
               onViewRecoveryPhrase={() => goToViewRecoveryPhrase(account)}
               onSelectAccount={() => {
-                changeActiveAccountId(
+                changeActiveAccount(
                   account.id,
-                  account.type as ParentAccount
+                  account.type as ParentAccount,
+                  account.address,
+                  account.publicKey
                 );
               }}
             />

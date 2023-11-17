@@ -11,6 +11,9 @@ import { KdfType, Vault } from "background/vault";
 export const ACTIVE_ACCOUNT: ActiveAccountStore = {
   id: "324bfe0e-cb19-5f1a-9630-9daaaecadabe",
   type: AccountType.Mnemonic,
+  address: "tnam1qz4sdx5jlh909j44uz46pf29ty0ztftfzc98s8dx",
+  publicKey:
+    "tpknam1qptrn64myunqr4847yq4cn0uwek5ecwc7eeexjfc5npmd5kmg6ex563n5as",
 };
 
 export const chain: Chain = {

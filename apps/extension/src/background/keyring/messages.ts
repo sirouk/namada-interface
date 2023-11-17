@@ -9,6 +9,7 @@ import {
   ParentAccount,
   AccountSecret,
   MnemonicValidationResponse,
+  ActiveAccountStore,
 } from "./types";
 import { validatePrivateKey } from "utils";
 
@@ -246,7 +247,7 @@ export class ScanAccountsMsg extends Message<void> {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  validate(): void {}
+  validate(): void { }
 
   route(): string {
     return ROUTE;
@@ -305,7 +306,9 @@ export class SetActiveAccountMsg extends Message<void> {
 
   constructor(
     public readonly accountId: string,
-    public readonly accountType: ParentAccount
+    public readonly accountType: ParentAccount,
+    public readonly address: string,
+    public readonly publicKey?: string
   ) {
     super();
   }
@@ -317,6 +320,10 @@ export class SetActiveAccountMsg extends Message<void> {
 
     if (!this.accountType) {
       throw new Error("Account Type is required!");
+    }
+
+    if (!this.address) {
+      throw new Error("Address is required!");
     }
   }
 
@@ -330,7 +337,7 @@ export class SetActiveAccountMsg extends Message<void> {
 }
 
 export class GetActiveAccountMsg extends Message<
-  { id: string; type: ParentAccount } | undefined
+  ActiveAccountStore | undefined
 > {
   public static type(): MessageType {
     return MessageType.GetActiveAccount;

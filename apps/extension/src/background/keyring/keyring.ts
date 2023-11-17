@@ -85,11 +85,9 @@ export class KeyRing {
     return await this.utilityStore.get(PARENT_ACCOUNT_ID_KEY);
   }
 
-  public async setActiveAccount(
-    id: string,
-    type: AccountType.Mnemonic | AccountType.Ledger
-  ): Promise<void> {
-    await this.utilityStore.set(PARENT_ACCOUNT_ID_KEY, { id, type });
+  public async setActiveAccount(account: ActiveAccountStore): Promise<void> {
+    const { id } = account;
+    await this.utilityStore.set(PARENT_ACCOUNT_ID_KEY, account);
 
     // To sync sdk wallet with DB
     const sdkData = await this.sdkStore.get(SDK_KEY);
@@ -152,7 +150,12 @@ export class KeyRing {
     // Prepare SDK store
     this.sdk.clear_storage();
     await this.initSdkStore(id);
-    await this.setActiveAccount(parentId || id, AccountType.Ledger);
+    await this.setActiveAccount({
+      id: parentId || id,
+      type: AccountType.Ledger,
+      address,
+      publicKey,
+    });
     return accountStore;
   }
 
@@ -188,9 +191,9 @@ export class KeyRing {
 
     try {
       const { sk, text, accountType } = ((): {
-        sk: string,
-        text: string,
-        accountType: AccountType
+        sk: string;
+        text: string;
+        accountType: AccountType;
       } => {
         switch (accountSecret.t) {
           case "Mnemonic":
@@ -202,7 +205,10 @@ export class KeyRing {
             const hdWallet = new HDWallet(seed);
             const key = hdWallet.derive(new Uint32Array(bip44Path));
             const privateKeyStringPtr = key.to_hex();
-            const sk = readStringPointer(privateKeyStringPtr, this.cryptoMemory);
+            const sk = readStringPointer(
+              privateKeyStringPtr,
+              this.cryptoMemory
+            );
 
             mnemonic.free();
             hdWallet.free();
@@ -217,7 +223,7 @@ export class KeyRing {
             return {
               sk: privateKey,
               text: privateKey,
-              accountType: AccountType.PrivateKey
+              accountType: AccountType.PrivateKey,
             };
 
           default:
@@ -264,7 +270,12 @@ export class KeyRing {
         alias,
         id
       );
-      await this.setActiveAccount(id, AccountType.Mnemonic);
+      await this.setActiveAccount({
+        id,
+        type: AccountType.Mnemonic,
+        address,
+        publicKey,
+      });
       return accountStore;
     } catch (e) {
       console.error(e);

@@ -46,7 +46,10 @@ export const getHandler: (service: KeyRingService) => Handler = (service) => {
           msg as ValidateMnemonicMsg
         );
       case SaveAccountSecretMsg:
-        return handleSaveAccountSecretMsg(service)(env, msg as SaveAccountSecretMsg);
+        return handleSaveAccountSecretMsg(service)(
+          env,
+          msg as SaveAccountSecretMsg
+        );
       case ScanAccountsMsg:
         return handleScanAccountsMsg(service)(env, msg as ScanAccountsMsg);
       case DeriveAccountMsg:
@@ -228,8 +231,13 @@ const handleSetActiveAccountMsg: (
   service: KeyRingService
 ) => InternalHandler<SetActiveAccountMsg> = (service) => {
   return async (_, msg) => {
-    const { accountId, accountType } = msg;
-    return await service.setActiveAccount(accountId, accountType);
+    const { accountId, accountType, address, publicKey } = msg;
+    return await service.setActiveAccount({
+      id: accountId,
+      type: accountType,
+      address,
+      publicKey,
+    });
   };
 };
 
