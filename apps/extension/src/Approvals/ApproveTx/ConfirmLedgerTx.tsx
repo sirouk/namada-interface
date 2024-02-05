@@ -3,9 +3,9 @@ import BigNumber from "bignumber.js";
 import { useCallback, useEffect, useState } from "react";
 
 import { ActionButton, Alert, Stack } from "@namada/components";
+import { LedgerError } from "@namada/ledger-namada";
 import { TxType, TxTypeLabel } from "@namada/shared";
 import { Message, Tokens, TxMsgValue, TxProps } from "@namada/types";
-import { LedgerError } from "@zondax/ledger-namada";
 import { ApprovalDetails, Status } from "Approvals/Approvals";
 import { QueryPublicKeyMsg } from "background/keyring";
 import {
