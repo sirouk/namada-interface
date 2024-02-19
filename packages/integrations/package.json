@@ -14,9 +14,9 @@
     "release": "yarn prepublish && release-it --verbose --ci",
     "release:dry-run": "yarn prepublish && release-it --verbose --dry-run --ci",
     "release:no-npm": "yarn prepublish && release-it --verbose --no-npm.publish --ci",
-    "test": "yarn wasm:build && jest",
-    "test:watch": "yarn wasm:build && jest --watchAll",
-    "test:ci": "jest",
+    "test": "yarn wasm:build && nx test",
+    "test:watch": "yarn wasm:build && nx test --watchAll",
+    "test:ci": "nx test",
     "lint": "eslint src --ext .ts",
     "lint:fix": "yarn lint -- --fix",
     "lint:ci": "yarn lint --max-warnings 0"
@@ -53,5 +53,8 @@
   "publishConfig": {
     "registry": "https://registry.npmjs.org",
     "access": "public"
+  },
+  "nx": {
+    "includedScripts": []
   }
 }

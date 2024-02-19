@@ -15,9 +15,9 @@
     "wasm:build": "./scripts/build.sh --release",
     "wasm:build:dev": "./scripts/build.sh",
     "wasm:build:node": "./scripts/build-test.sh",
-    "test": "yarn wasm:build:node && yarn jest",
+    "test": "yarn wasm:build:node && yarn nx test",
     "test:watch": "yarn wasm:build:node && yarn test --watch",
-    "test:ci": "jest",
+    "test:ci": "nx test",
     "test-wasm:ci": "cd ./lib && cargo test"
   },
   "dependencies": {
@@ -40,5 +40,8 @@
   "publishConfig": {
     "registry": "https://registry.npmjs.org",
     "access": "public"
+  },
+  "nx": {
+    "includedScripts": []
   }
 }

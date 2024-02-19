@@ -26,9 +26,9 @@
     "start:chrome:proxy": "NAMADA_INTERFACE_PROXY=true yarn start:chrome",
     "start:firefox": "yarn clean:firefox && NODE_ENV=development TARGET=firefox yarn watch",
     "start:firefox:proxy": "NAMADA_INTERFACE_PROXY=true yarn start:firefox",
-    "test": "./scripts/build-node.sh && yarn jest",
-    "test:watch": "./scripts/build-node.sh && yarn jest --watchAll=true",
-    "test:ci": "jest",
+    "test": "./scripts/build-node.sh && yarn nx test",
+    "test:watch": "./scripts/build-node.sh && yarn nx test --watchAll=true",
+    "test:ci": "nx test",
     "wasm:build": "node ./scripts/build.js --release",
     "wasm:build:multicore": "node ./scripts/build.js --release --multicore",
     "wasm:build:dev": "node ./scripts/build.js",
@@ -107,5 +107,8 @@
     "webpack-bundle-analyzer": "^4.10.1",
     "webpack-cli": "^4.10.0",
     "webpack-extension-reloader": "^1.1.4"
+  },
+  "nx": {
+    "includedScripts": []
   }
 }
