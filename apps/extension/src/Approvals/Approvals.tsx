@@ -4,14 +4,14 @@ import { Route, Routes } from "react-router-dom";
 import { Container } from "@namada/components";
 import { TxType } from "@namada/shared";
 
-import { AppHeader } from "App/Common/AppHeader";
-import { TopLevelRoute } from "Approvals/types";
+import { AppHeader } from "../App/Common";
 import { ApproveConnection } from "./ApproveConnection";
 import { ApproveSignature } from "./ApproveSignature";
 import { ApproveTx } from "./ApproveTx/ApproveTx";
 import { ConfirmLedgerTx } from "./ApproveTx/ConfirmLedgerTx";
 import { ConfirmTx } from "./ApproveTx/ConfirmTx";
 import { ConfirmSignature } from "./ConfirmSignature";
+import { TopLevelRoute } from "./types";
 
 export enum Status {
   Completed,

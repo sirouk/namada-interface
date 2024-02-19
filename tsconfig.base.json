@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "paths": {
       "@namada/chains": ["../../../packages/chains/src"],
       "@namada/chains/*": ["../../../packages/chains/src/*"],
@@ -15,8 +16,7 @@
       "@namada/shared/*": ["../../../packages/shared/src/*"],
       "@namada/storage": ["../../../packages/storage/src"],
       "@namada/storage/*": ["../../../packages/storage/src/*"],
-      "@namada/types": ["../../../packages/types/src"],
-      "@namada/types/*": ["../../../packages/types/src/*"],
+      "@namada/types": ["libs/types/src/index.ts"],
       "@namada/utils": ["../../../packages/utils/src"],
       "@namada/utils/*": ["../../../packages/utils/src/*"]
     }

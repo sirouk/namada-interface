@@ -9,11 +9,11 @@ import {
   Stack,
 } from "@namada/components";
 import { isUrlValid } from "@namada/utils";
-import { UpdateChainMsg } from "background/chains";
-import { useRequester } from "hooks/useRequester";
-import { GetChainMsg } from "provider";
 import React, { useCallback, useEffect, useState } from "react";
-import { Ports } from "router";
+import { UpdateChainMsg } from "../../background/chains";
+import { useRequester } from "../../hooks/useRequester";
+import { GetChainMsg } from "../../provider";
+import { Ports } from "../../router";
 
 enum Status {
   Unsubmitted,

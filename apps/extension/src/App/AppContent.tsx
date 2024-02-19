@@ -3,15 +3,15 @@ import { Route, Routes, useNavigate } from "react-router-dom";
 
 import { Alert, Stack } from "@namada/components";
 import { DerivedAccount } from "@namada/types";
-import { useAccountContext, useVaultContext } from "context";
-import { useQuery } from "hooks";
-import { useRequester } from "hooks/useRequester";
+import { useAccountContext, useVaultContext } from "../context";
+import { useQuery } from "../hooks";
+import { useRequester } from "../hooks/useRequester";
 import {
   CheckDurabilityMsg,
   FetchAndStoreMaspParamsMsg,
   HasMaspParamsMsg,
-} from "provider/messages";
-import { Ports } from "router";
+} from "../provider";
+import { Ports } from "../router";
 import {
   DeleteAccount,
   RenameAccount,

@@ -9,13 +9,14 @@ import {
   Stack,
 } from "@namada/components";
 import { AccountType, DerivedAccount } from "@namada/types";
-import { PageHeader } from "App/Common";
-import routes from "App/routes";
-import { CheckPasswordMsg } from "background/vault";
-import { AccountContext } from "context";
-import { useRequester } from "hooks/useRequester";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { Ports } from "router";
+import { useLocation, useNavigate, useParams } from "react-router";
+
+import { CheckPasswordMsg } from "../../background/vault";
+import { AccountContext } from "../../context";
+import { useRequester } from "../../hooks/useRequester";
+import { Ports } from "../../router";
+import { PageHeader } from "../Common";
+import routes from "../routes";
 
 enum Status {
   Unsubmitted,

@@ -36,3 +36,5 @@ yarn-error.log*
 .nx/cache
 
 storybook-static
+
+dist

@@ -4,13 +4,13 @@ import { useNavigate } from "react-router-dom";
 import { ActionButton, Alert, Stack } from "@namada/components";
 import { useSanitizedParams } from "@namada/hooks";
 import { shortenAddress } from "@namada/utils";
-import { SignatureDetails } from "Approvals/Approvals";
-import { TopLevelRoute } from "Approvals/types";
-import { RejectSignatureMsg } from "background/approvals";
-import { useQuery } from "hooks";
-import { useRequester } from "hooks/useRequester";
-import { Ports } from "router";
-import { closeCurrentTab } from "utils";
+import { RejectSignatureMsg } from "../background/approvals";
+import { useQuery } from "../hooks";
+import { useRequester } from "../hooks/useRequester";
+import { Ports } from "../router";
+import { closeCurrentTab } from "../utils";
+import { SignatureDetails } from "./Approvals";
+import { TopLevelRoute } from "./types";
 
 type Props = {
   setSignatureDetails: (details: SignatureDetails) => void;

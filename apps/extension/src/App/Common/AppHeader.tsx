@@ -1,9 +1,9 @@
 import { Image } from "@namada/components";
 import clsx from "clsx";
-import { useVaultContext } from "context";
 import { useState } from "react";
 import { GoArrowLeft, GoGear, GoUnlock } from "react-icons/go";
 import { useNavigate } from "react-router-dom";
+import { useVaultContext } from "../../context";
 import { AppHeaderNavigation } from "./AppHeaderNavigation";
 
 type AppHeaderProps = {

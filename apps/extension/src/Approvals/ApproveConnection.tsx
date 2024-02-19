@@ -1,9 +1,9 @@
 import { ActionButton, Alert, Stack } from "@namada/components";
-import { ConnectInterfaceResponseMsg } from "background/approvals";
-import { useQuery } from "hooks";
-import { useRequester } from "hooks/useRequester";
-import { Ports } from "router";
-import { closeCurrentTab } from "utils";
+import { ConnectInterfaceResponseMsg } from "../background/approvals";
+import { useQuery } from "../hooks";
+import { useRequester } from "../hooks/useRequester";
+import { Ports } from "../router";
+import { closeCurrentTab } from "../utils";
 
 export const ApproveConnection: React.FC = () => {
   const requester = useRequester();

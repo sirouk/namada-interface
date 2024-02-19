@@ -1,10 +1,10 @@
 import { Stack } from "@namada/components";
-import routes from "App/routes";
 import clsx from "clsx";
-import { useVaultContext } from "context";
 import { FaDiscord, FaXTwitter } from "react-icons/fa6";
 import { GoQuestion } from "react-icons/go";
 import { useNavigate } from "react-router-dom";
+import { useVaultContext } from "../../context";
+import routes from "../routes";
 
 type AppHeaderNavigationProps = {
   open: boolean;

@@ -6,8 +6,7 @@ import { ActionButton, Alert, Stack } from "@namada/components";
 import { TxType, TxTypeLabel } from "@namada/shared";
 import { Message, Tokens, TxMsgValue, TxProps } from "@namada/types";
 import { LedgerError } from "@zondax/ledger-namada";
-import { ApprovalDetails, Status } from "Approvals/Approvals";
-import { QueryPublicKeyMsg } from "background/keyring";
+import { QueryPublicKeyMsg } from "../../background/keyring";
 import {
   GetRevealPKBytesMsg,
   GetTxBytesMsg,
@@ -16,11 +15,12 @@ import {
   StoreRevealedPK,
   SubmitSignedRevealPKMsg,
   SubmitSignedTxMsg,
-} from "background/ledger";
-import { useRequester } from "hooks/useRequester";
-import { GetChainMsg } from "provider";
-import { Ports } from "router";
-import { closeCurrentTab } from "utils";
+} from "../../background/ledger";
+import { useRequester } from "../../hooks/useRequester";
+import { GetChainMsg } from "../../provider";
+import { Ports } from "../../router";
+import { closeCurrentTab } from "../../utils";
+import { ApprovalDetails, Status } from "../Approvals";
 
 type Props = {
   details?: ApprovalDetails;

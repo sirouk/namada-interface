@@ -1,6 +1,6 @@
 import { Container } from "@namada/components";
-import { useVaultContext } from "context/VaultContext";
 import { matchPath, useLocation } from "react-router-dom";
+import { useVaultContext } from "../context";
 import { AppContent } from "./AppContent";
 import { AppHeader } from "./Common/AppHeader";
 import { Login } from "./Login";

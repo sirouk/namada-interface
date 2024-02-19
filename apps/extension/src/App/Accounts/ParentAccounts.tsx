@@ -9,10 +9,10 @@ import {
   Stack,
 } from "@namada/components";
 import { DerivedAccount } from "@namada/types";
-import { PageHeader } from "App/Common";
-import routes from "App/routes";
-import { ParentAccount } from "background/keyring";
-import { AccountContext } from "context";
+import { ParentAccount } from "../../background/keyring";
+import { AccountContext } from "../../context";
+import { PageHeader } from "../Common";
+import routes from "../routes";
 
 /**
  * Represents the extension's settings page.

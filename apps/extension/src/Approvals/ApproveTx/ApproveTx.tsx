@@ -6,13 +6,13 @@ import { useSanitizedParams } from "@namada/hooks";
 import { TxType, TxTypeLabel } from "@namada/shared";
 import { AccountType, Tokens } from "@namada/types";
 import { shortenAddress } from "@namada/utils";
-import { ApprovalDetails } from "Approvals/Approvals";
-import { TopLevelRoute } from "Approvals/types";
-import { RejectTxMsg } from "background/approvals";
-import { useQuery } from "hooks";
-import { useRequester } from "hooks/useRequester";
-import { Ports } from "router";
-import { closeCurrentTab } from "utils";
+import { RejectTxMsg } from "../../background/approvals";
+import { useQuery } from "../../hooks";
+import { useRequester } from "../../hooks/useRequester";
+import { Ports } from "../../router";
+import { closeCurrentTab } from "../../utils";
+import { ApprovalDetails } from "../Approvals";
+import { TopLevelRoute } from "../types";
 
 type Props = {
   setDetails: (details: ApprovalDetails) => void;

@@ -9,8 +9,8 @@ import {
   Input,
   Stack,
 } from "@namada/components";
-import { ResetPasswordError } from "background/vault";
-import { useVaultContext } from "context";
+import { ResetPasswordError } from "../../background/vault";
+import { useVaultContext } from "../../context";
 
 enum Status {
   Unsubmitted,

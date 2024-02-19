@@ -3,7 +3,6 @@
   "compilerOptions": {
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
-    "baseUrl": "./src",
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
@@ -18,7 +17,15 @@
     "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
-    "target": "es2015"
+    "target": "es2015",
+    "paths": {
+      "@namada/types": ["libs/types/src/index.ts"],
+      "@namada/storage": ["packages/storage/src/index.ts"],
+      "@namada/chains": ["packages/chains/src/index.ts"],
+      "@namada/utils": ["packages/utils/src/index.ts"],
+      "@namada/hooks": ["packages/hooks/src/index.ts"],
+      "@namada/components": ["packages/components/src/index.ts"],
+    }
   },
   "include": ["src/**/*.ts", "src/**/*.tsx"],
   "exclude": ["node_modules"],

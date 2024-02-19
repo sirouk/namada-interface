@@ -4,13 +4,13 @@ import { useNavigate } from "react-router-dom";
 import { ActionButton, Alert, Input, Stack } from "@namada/components";
 import { SupportedTx, TxType, TxTypeLabel } from "@namada/shared";
 import { shortenAddress } from "@namada/utils";
-import { ApprovalDetails, Status } from "Approvals/Approvals";
-import { SubmitApprovedTxMsg } from "background/approvals";
-import { UnlockVaultMsg } from "background/vault";
-import { useRequester } from "hooks/useRequester";
-import { FetchAndStoreMaspParamsMsg, HasMaspParamsMsg } from "provider";
-import { Ports } from "router";
-import { closeCurrentTab } from "utils";
+import { ApprovalDetails, Status } from "../../Approvals/Approvals";
+import { SubmitApprovedTxMsg } from "../../background/approvals";
+import { UnlockVaultMsg } from "../../background/vault";
+import { useRequester } from "../../hooks/useRequester";
+import { FetchAndStoreMaspParamsMsg, HasMaspParamsMsg } from "../../provider";
+import { Ports } from "../../router";
+import { closeCurrentTab } from "../../utils";
 
 type Props = {
   details?: ApprovalDetails;

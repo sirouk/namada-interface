@@ -3,15 +3,15 @@ import { useCallback, useEffect, useState } from "react";
 import browser from "webextension-polyfill";
 
 import { Alert, Stack } from "@namada/components";
-import { PageHeader } from "App/Common";
+import clsx from "clsx";
 import {
   APPROVED_ORIGINS_KEY,
   ApprovedOriginsStore,
   RevokeConnectionMsg,
-} from "background/approvals";
-import clsx from "clsx";
-import { useRequester } from "hooks/useRequester";
-import { KVPrefix, Ports } from "router";
+} from "../../background/approvals";
+import { useRequester } from "../../hooks/useRequester";
+import { KVPrefix, Ports } from "../../router";
+import { PageHeader } from "../Common";
 
 const approvedOriginsStore = new ExtensionKVStore<ApprovedOriginsStore>(
   KVPrefix.LocalStorage,

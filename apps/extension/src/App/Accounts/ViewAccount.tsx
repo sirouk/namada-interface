@@ -1,10 +1,10 @@
 import { ActionButton, GapPatterns, Stack, ViewKeys } from "@namada/components";
 import { AccountType, DerivedAccount } from "@namada/types";
-import { PageHeader } from "App/Common";
-import routes from "App/routes";
-import { AccountContext } from "context";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { AccountContext } from "../../context";
+import { PageHeader } from "../Common";
+import routes from "../routes";
 
 type ViewAccountUrlParams = {
   accountId: string;

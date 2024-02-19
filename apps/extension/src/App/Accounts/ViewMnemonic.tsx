@@ -7,12 +7,11 @@ import {
   Stack,
 } from "@namada/components";
 import { DerivedAccount } from "@namada/types";
-import { PageHeader } from "App/Common";
-import routes from "App/routes";
-import { useAccountContext } from "context";
-import { useVaultContext } from "context/VaultContext";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useAccountContext, useVaultContext } from "../../context";
+import { PageHeader } from "../Common";
+import routes from "../routes";
 
 type ViewMnemonicParamsType = {
   accountId: string;

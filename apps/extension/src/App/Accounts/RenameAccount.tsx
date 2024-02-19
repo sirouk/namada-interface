@@ -1,10 +1,10 @@
 import { ActionButton, GapPatterns, Input, Stack } from "@namada/components";
 import { DerivedAccount } from "@namada/types";
-import { PageHeader } from "App/Common";
-import routes from "App/routes";
-import { useAccountContext } from "context";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useAccountContext } from "../../context";
+import { PageHeader } from "../Common";
+import routes from "../routes";
 
 type RenameAccountParamsType = {
   accountId: string;
