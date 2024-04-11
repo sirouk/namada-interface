@@ -50,12 +50,12 @@ const toMyValidators = (
   const index = acc.findIndex((myValidator) => myValidator.uuid === validator);
   const v = acc[index];
   const sliceFn =
-    index == -1
-      ? (arr: MyValidators[]) => arr
-      : (arr: MyValidators[], idx: number) => [
-          ...arr.slice(0, idx),
-          ...arr.slice(idx + 1),
-        ];
+    index == -1 ?
+      (arr: MyValidators[]) => arr
+    : (arr: MyValidators[], idx: number) => [
+        ...arr.slice(0, idx),
+        ...arr.slice(idx + 1),
+      ];
 
   const stakedAmount = new BigNumber(stake).plus(
     new BigNumber(v?.stakedAmount || 0)
