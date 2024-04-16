@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { chains } from "@namada/chains";
-import { ActionButton, Input, Toggle } from "@namada/components";
+import { ActionButton, Input, ToggleButton } from "@namada/components";
 import { AccountType, DerivedAccount } from "@namada/types";
 import { makeBip44Path } from "@namada/utils";
 
@@ -281,9 +281,9 @@ const AddAccount: React.FC<Props> = ({
   const handleAccountAdd = useCallback(async (): Promise<void> => {
     try {
       const derivedAccount =
-        parentAccountType === AccountType.Ledger
-          ? await addLedgerAccount()
-          : await addPrivateKeyAccount();
+        parentAccountType === AccountType.Ledger ?
+          await addLedgerAccount()
+        : await addPrivateKeyAccount();
       if (derivedAccount) {
         setAccounts([...accounts, derivedAccount]);
         navigate(TopLevelRoute.Accounts);
@@ -306,8 +306,9 @@ const AddAccount: React.FC<Props> = ({
   const handleFocus = (e: React.ChangeEvent<HTMLInputElement>): void =>
     e.target.select();
 
-  const parentDerivationPath = isTransparent
-    ? `${bip44Prefix}'/${coinType}'/${parentAccountIndex}'/`
+  const parentDerivationPath =
+    isTransparent ?
+      `${bip44Prefix}'/${coinType}'/${parentAccountIndex}'/`
     : `${zip32Prefix}'/${coinType}'/${parentAccountIndex}'/`;
 
   return (
@@ -371,9 +372,9 @@ const AddAccount: React.FC<Props> = ({
             {parentAccountType !== AccountType.Ledger && (
               <div className="my-3">
                 <div className="flex justify-end items-center pt-1 w-full">
-                  <span>Transparent&nbsp;</span>
-                  <Toggle
-                    onClick={() => setIsTransparent(!isTransparent)}
+                  <ToggleButton
+                    label="Transparent"
+                    onChange={() => setIsTransparent(!isTransparent)}
                     checked={isTransparent}
                   />
                   <span>&nbsp;Shielded</span>
