@@ -1,13 +1,11 @@
 import { ActionButton, ProgressBar, Stack } from "@namada/components";
 import { Proposal } from "@namada/types";
+import { stringFromTimestampInSec, timeFromSeconds } from "@namada/utils";
 import clsx from "clsx";
-import { useAtomValue } from "jotai";
 import { FaChevronLeft } from "react-icons/fa";
 import { SiWebassembly } from "react-icons/si";
 import { VscJson } from "react-icons/vsc";
 import { Link, useNavigate } from "react-router-dom";
-import { currentEpochAtom } from "slices/proposals";
-import { showEpoch } from "utils";
 import { StatusLabel, TypeLabel, VotedLabel } from "./ProposalLabels";
 import GovernanceRoutes from "./routes";
 
@@ -58,18 +56,22 @@ export const ProposalHeader: React.FC<ProposalHeaderProps> = (props) => {
   const navigate = useNavigate();
   const voteButtonDisabled =
     !isExtensionConnected || props.voted || status !== "ongoing";
-  const { startEpoch, endEpoch } = proposal;
-  const currentEpoch = useAtomValue(currentEpochAtom);
 
-  if (!currentEpoch.isSuccess) {
-    return null;
-  }
+  const { proposalType } = proposal;
+  const wasmCode =
+    proposalType.type === "default_with_wasm" ? proposalType.data : undefined;
 
-  const totalEpochs = endEpoch - startEpoch;
-  const relativeCurrentEpoch = currentEpoch.data - startEpoch;
+  const totalProgress = proposal.endTime - proposal.startTime;
+  const currentProgress = proposal.currentTime - proposal.startTime;
 
-  const { type, data } = proposal.proposalType;
-  const wasmCode = type === "default" ? data : undefined;
+  console.log(
+    "totalProgress",
+    totalProgress,
+    "currentProgress",
+    currentProgress,
+    "%",
+    (currentProgress / totalProgress) * 100
+  );
 
   return (
     <>
@@ -136,15 +138,29 @@ export const ProposalHeader: React.FC<ProposalHeaderProps> = (props) => {
       </div>
       <div className="flex gap-10 bg-neutral-900 mb-9 px-5 py-3 -mx-3 rounded-md">
         <div className="w-full grid grid-cols-2 text-xs">
-          <span>Progress</span>
+          <Stack
+            gap={0}
+            direction="horizontal"
+            className="col-span-2 justify-between"
+          >
+            <span>Progress</span>{" "}
+            <span>
+              {timeFromSeconds(proposal.endTime - proposal.currentTime)}{" "}
+              Remaining
+            </span>
+          </Stack>
           <div className="col-span-2 mt-3 mb-2">
             <ProgressBar
-              value={{ value: relativeCurrentEpoch, color: "#11DFDF" }}
-              total={{ value: totalEpochs, color: "#3A3A3A" }}
+              value={{ value: currentProgress, color: "#11DFDF" }}
+              total={{ value: totalProgress, color: "#3A3A3A" }}
             />
           </div>
-          <div className="col-start-1">{showEpoch(startEpoch)}</div>
-          <div className="text-right">{showEpoch(endEpoch)}</div>
+          <div className="col-start-1">
+            {stringFromTimestampInSec(proposal.startTime)}
+          </div>
+          <div className="text-right">
+            {stringFromTimestampInSec(proposal.endTime)}
+          </div>
         </div>
         {isExtensionConnected && (
           <div className="w-32 flex items-center justify-center">

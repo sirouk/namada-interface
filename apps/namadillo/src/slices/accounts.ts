@@ -1,14 +1,9 @@
 import { getIntegration } from "@namada/integrations";
-import {
-  Account as AccountDetails,
-  ChainKey,
-  TokenBalances,
-  TokenType,
-} from "@namada/types";
+import { Account as AccountDetails, ChainKey, TokenType } from "@namada/types";
 import BigNumber from "bignumber.js";
-import { getSdkInstance } from "hooks";
 import { atom } from "jotai";
 import { atomWithQuery } from "jotai-tanstack-query";
+import { DefaultApi, Balance as IndexerBalance } from "namada-indexer-client";
 import { shouldUpdateBalanceAtom } from "./etc";
 
 const {
@@ -98,38 +93,33 @@ export const balancesAtom = atomWithQuery<Record<Address, Balance>>((get) => {
     refetchInterval: enablePolling ? 1000 : false,
     queryKey: ["balances", token],
     queryFn: async () => {
-      const transparentBalances = await Promise.all(
-        queryBalance(transparentAccounts, token)
+      const api = new DefaultApi();
+      const balancePairs = await Promise.all(
+        transparentAccounts.map(({ address }) =>
+          api
+            .apiV1AccountAddressGet(address)
+            .then((response) => [address, response] as const)
+        )
       );
 
-      let balances = {};
-      transparentBalances.forEach(([address, balance]) => {
-        balances = { ...balances, [address]: balance };
-      });
+      const balances = balancePairs.reduce(
+        (acc, [address, response]) => {
+          const balances = response.data as IndexerBalance[];
+          // TODO: we index only NAM balance for now
+          const namBalance = balances[0];
+
+          if (typeof namBalance !== "undefined") {
+            acc[address] = {
+              NAM: BigNumber(namBalance.balance || "0"),
+            };
+          }
+
+          return acc;
+        },
+        {} as Record<Address, Balance>
+      );
 
       return balances;
     },
   };
 });
-
-const queryBalance = (
-  accounts: readonly AccountDetails[],
-  token: string
-): Promise<[string, TokenBalances]>[] => {
-  return accounts.map(async (account): Promise<[string, TokenBalances]> => {
-    const { rpc } = await getSdkInstance();
-    const tokens = [token];
-
-    const balances = (await rpc.queryBalance(account.address, tokens)).map(
-      ([token, amount]) => {
-        return {
-          token,
-          amount,
-        };
-      }
-    );
-
-    // TODO: This is for testing
-    return [account.address, { NAM: BigNumber(balances[0].amount) }];
-  });
-};

@@ -100,7 +100,7 @@ export const VoteInfoCards: React.FC<{
       />
       <InfoCard
         title="Activation Epoch"
-        content={showEpoch(proposal.graceEpoch)}
+        content={showEpoch(proposal.activationEpoch)}
         className="col-span-2"
       />
       <InfoCard

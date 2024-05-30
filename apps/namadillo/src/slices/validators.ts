@@ -1,12 +1,12 @@
-import { Query } from "@namada/shared";
 import BigNumber from "bignumber.js";
+import { atomWithQuery } from "jotai-tanstack-query";
 import {
-  AtomWithQueryResult,
-  UndefinedInitialDataOptions,
-  atomWithQuery,
-} from "jotai-tanstack-query";
+  DefaultApi,
+  Bond as IndexerBond,
+  Validator as IndexerValidator,
+  VotingPower as IndexerVotingPower,
+} from "namada-indexer-client";
 import { transparentAccountsAtom } from "./accounts";
-import { chainAtom } from "./chain";
 import { shouldUpdateBalanceAtom } from "./etc";
 
 type Unique = {
@@ -14,10 +14,10 @@ type Unique = {
 };
 
 export type Validator = Unique & {
-  alias: string;
+  alias?: string;
   address: string;
   description?: string;
-  homepageUrl: string;
+  homepageUrl?: string;
   expectedApr: number;
   unbondingPeriod: string;
   votingPowerInNAM?: BigNumber;
@@ -34,34 +34,48 @@ export type MyValidator = {
   validator: Validator;
 };
 
-// TODO: Change this after the indexer is created
-const toValidator = (address: string): Validator => ({
-  uuid: address,
-  alias: "<Validator Name>",
-  description: "Lorem ipsum dolor sit amet",
-  address,
-  homepageUrl: "http://namada.net",
-  expectedApr: 0.1127,
-  unbondingPeriod: "21 days",
-  votingPowerInNAM: BigNumber("70000000"),
-  votingPowerPercentage: 0.06,
-  commission: new BigNumber(0), // TODO: implement commission
-  imageUrl: "https://loremflickr.com/200/200",
-});
+const toValidator = (
+  indexerValidator: IndexerValidator,
+  indexerVotingPower: IndexerVotingPower
+): Validator => {
+  return {
+    uuid: indexerValidator.address,
+    alias: indexerValidator.name,
+    description: indexerValidator.description,
+    address: indexerValidator.address,
+    homepageUrl: indexerValidator.website,
+    // TODO: Return this from the indexer
+    expectedApr: 0.1127,
+    // TODO: Return this from the indexer
+    unbondingPeriod: "21 days",
+    // TODO: cleanup string/number/bignumber types
+    votingPowerInNAM: BigNumber(indexerValidator.votingPower),
+    votingPowerPercentage:
+      Number(indexerValidator.votingPower) /
+      indexerVotingPower.totalVotingPower,
+    commission: BigNumber(indexerValidator.commission),
+    imageUrl: indexerValidator.avatar,
+  };
+};
 
-export const allValidatorsAtom = atomWithQuery((get) => ({
+export const allValidatorsAtom = atomWithQuery(() => ({
   queryKey: ["all-validators"],
   queryFn: async () => {
-    const { rpc } = get(chainAtom);
-    const query = new Query(rpc);
-    const queryResult =
-      (await query.query_all_validator_addresses()) as string[];
-    return queryResult.map(toValidator);
+    const api = new DefaultApi();
+    const [validatorsResponse, votingPowerResponse] = await Promise.all([
+      api.apiV1PosValidatorGet(),
+      api.apiV1PosVotingPowerGet(),
+    ]);
+
+    // TODO: rename one data to items?
+    const validators = validatorsResponse.data.data;
+    const votingPower = votingPowerResponse.data;
+
+    return validators.map((v) => toValidator(v, votingPower));
   },
 }));
 
-// eslint-disable-next-line
-export const myValidatorsAtom = atomWithQuery((get) => {
+export const myValidatorsAtom = atomWithQuery<MyValidator[]>((get) => {
   const accounts = get(transparentAccountsAtom);
   const ids = accounts.map((account) => account.address).join("-");
   // TODO: Refactor after this event subscription is enabled in the indexer
@@ -69,12 +83,21 @@ export const myValidatorsAtom = atomWithQuery((get) => {
   return {
     queryKey: ["my-validators", ids],
     refetchInterval: enablePolling ? 1000 : false,
-    queryFn: async (): Promise<MyValidator[]> => {
-      const { rpc } = get(chainAtom);
+    queryFn: async () => {
       const addresses = accounts.map((account) => account.address);
-      const query = new Query(rpc);
-      const myValidatorsRes = await query.query_my_validators(addresses);
-      return myValidatorsRes.map(toMyValidators);
+      const api = new DefaultApi();
+      const bondsPromises = Promise.all(
+        addresses.map((a) => api.apiV1PosBondAddressGet(a))
+      );
+      const [bonds, totalVotingPowerResponse] = await Promise.all([
+        bondsPromises,
+        api.apiV1PosVotingPowerGet(),
+      ]);
+
+      return toMyValidators(
+        bonds.flatMap((b) => b.data),
+        totalVotingPowerResponse.data
+      );
     },
   };
 });
@@ -122,20 +145,20 @@ const deriveFromMyValidatorsAtom = (
 };
 
 const toMyValidators = (
-  // TODO: omg
-  [_, validator, stake, unbonded, withdrawable]: [
-    string,
-    string,
-    string,
-    string,
-    string,
-  ]
-): MyValidator => {
-  return {
-    stakingStatus: "Bonded",
-    stakedAmount: new BigNumber(stake),
-    unbondedAmount: new BigNumber(unbonded),
-    withdrawableAmount: new BigNumber(withdrawable),
-    validator: toValidator(validator),
-  };
+  indexerBonds: IndexerBond[],
+  totalVotingPower: IndexerVotingPower
+): MyValidator[] => {
+  return indexerBonds.map((indexerBond) => {
+    const validator = toValidator(indexerBond.validator, totalVotingPower);
+
+    console.log(indexerBond);
+    return {
+      uuid: String(indexerBond.validator.validatorId),
+      stakingStatus: "bonded",
+      stakedAmount: BigNumber(indexerBond.amount),
+      unbondedAmount: BigNumber(0),
+      withdrawableAmount: BigNumber(0),
+      validator,
+    };
+  });
 };
