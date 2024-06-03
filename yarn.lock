@@ -26794,10 +26794,10 @@ __metadata:
 
 "namada-indexer-client@file:../../../namada-indexer-client::locator=%40namada%2Fnamadillo%40workspace%3Aapps%2Fnamadillo":
   version: 1.0.0
-  resolution: "namada-indexer-client@file:../../../namada-indexer-client#../../../namada-indexer-client::hash=fb27aa&locator=%40namada%2Fnamadillo%40workspace%3Aapps%2Fnamadillo"
+  resolution: "namada-indexer-client@file:../../../namada-indexer-client#../../../namada-indexer-client::hash=318144&locator=%40namada%2Fnamadillo%40workspace%3Aapps%2Fnamadillo"
   dependencies:
     axios: "npm:^0.21.1"
-  checksum: 4288e55833a2dbfc62583f64773d2fa68077987a7fbdf33ab346d98740214622c0c3b84add7789a551c286e062d562e139bc88417440617c034c19406e34a1f1
+  checksum: 1534a434cfdbde9c0cdc2bd4d3ae77f37876283a12702f103368a3a5bd8b1c7592c3d2cffae2aaf9dae98d24e0005b2b499a95af58ac370d7edded368bf93c41
   languageName: node
   linkType: hard
 

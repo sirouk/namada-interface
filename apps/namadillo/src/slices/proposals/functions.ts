@@ -1,6 +1,5 @@
 import { EncodedTx } from "@heliax/namada-sdk/web";
 import { getIntegration } from "@namada/integrations";
-import { Query } from "@namada/shared";
 import {
   Account,
   AddRemove,
@@ -299,16 +298,6 @@ export const fetchVotedProposalIds = async (
   const proposalIds = response.data.map((vote) => BigInt(vote.proposalId));
 
   return proposalIds;
-};
-
-//TODO: do we return this already from the indexer?
-export const fetchProposalCode = async (
-  chain: Chain,
-  id: bigint
-): Promise<Uint8Array> => {
-  const { rpc } = chain;
-  const query = new Query(rpc);
-  return await query.query_proposal_code(id);
 };
 
 export const performVote = async (

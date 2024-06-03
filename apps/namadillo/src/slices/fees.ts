@@ -3,6 +3,7 @@ import { getSdkInstance } from "hooks";
 import invariant from "invariant";
 import { atom } from "jotai";
 import { atomWithQuery } from "jotai-tanstack-query";
+import { DefaultApi } from "namada-indexer-client";
 import { accountsAtom } from "slices/accounts";
 import { chainAtom } from "slices/chain";
 
@@ -56,15 +57,18 @@ export const isRevealPkNeededAtom = (() => {
       set(
         base,
         (async (): Promise<RevealPkNeededMap> => {
+          const api = new DefaultApi();
           const accounts = get(accountsAtom);
           const transparentAccounts = accounts.filter(
             (account) => !account.isShielded
           );
-          const { rpc } = await getSdkInstance();
 
           const entries = await Promise.all(
             transparentAccounts.map(async ({ address }) => {
-              const publicKey = await rpc.queryPublicKey(address);
+              const { publicKey } = (
+                await api.apiV1RevealedPublicKeyAddressGet(address)
+              ).data;
+
               return [address, !publicKey];
             })
           );
