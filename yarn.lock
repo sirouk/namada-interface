@@ -45,6 +45,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@anomaorg/namada-indexer-client@npm:0.0.1":
+  version: 0.0.1
+  resolution: "@anomaorg/namada-indexer-client@npm:0.0.1"
+  dependencies:
+    axios: "npm:^0.21.1"
+  checksum: 74c5aa9912c4cec32eb867dcfced17e899c531ce733757adb6bea793ab1d67a060e457d00172e213d9b3b00685cd6a1be5de99775a35c96054b27841609b692e
+  languageName: node
+  linkType: hard
+
 "@apideck/better-ajv-errors@npm:^0.3.1":
   version: 0.3.3
   resolution: "@apideck/better-ajv-errors@npm:0.3.3"
@@ -8422,6 +8431,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@namada/namadillo@workspace:apps/namadillo"
   dependencies:
+    "@anomaorg/namada-indexer-client": "npm:0.0.1"
     "@cosmjs/encoding": "npm:^0.32.3"
     "@playwright/test": "npm:^1.24.1"
     "@svgr/webpack": "npm:^6.5.1"
@@ -8460,7 +8470,6 @@ __metadata:
     jotai: "npm:^2.6.3"
     local-cors-proxy: "npm:^1.1.0"
     lodash.debounce: "npm:^4.0.8"
-    namada-indexer-client: ../../../namada-indexer-client
     postcss: "npm:^8.4.32"
     postcss-loader: "npm:^7.3.3"
     react: "npm:^18.0.0"
@@ -26789,15 +26798,6 @@ __metadata:
     object-assign: "npm:^4.0.1"
     thenify-all: "npm:^1.0.0"
   checksum: 103114e93f87362f0b56ab5b2e7245051ad0276b646e3902c98397d18bb8f4a77f2ea4a2c9d3ad516034ea3a56553b60d3f5f78220001ca4c404bd711bd0af39
-  languageName: node
-  linkType: hard
-
-"namada-indexer-client@file:../../../namada-indexer-client::locator=%40namada%2Fnamadillo%40workspace%3Aapps%2Fnamadillo":
-  version: 1.0.0
-  resolution: "namada-indexer-client@file:../../../namada-indexer-client#../../../namada-indexer-client::hash=318144&locator=%40namada%2Fnamadillo%40workspace%3Aapps%2Fnamadillo"
-  dependencies:
-    axios: "npm:^0.21.1"
-  checksum: 1534a434cfdbde9c0cdc2bd4d3ae77f37876283a12702f103368a3a5bd8b1c7592c3d2cffae2aaf9dae98d24e0005b2b499a95af58ac370d7edded368bf93c41
   languageName: node
   linkType: hard
 

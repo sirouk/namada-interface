@@ -1,9 +1,12 @@
+import {
+  DefaultApi,
+  Balance as IndexerBalance,
+} from "@anomaorg/namada-indexer-client";
 import { getIntegration } from "@namada/integrations";
 import { Account as AccountDetails, ChainKey, TokenType } from "@namada/types";
 import BigNumber from "bignumber.js";
 import { atom } from "jotai";
 import { atomWithQuery } from "jotai-tanstack-query";
-import { DefaultApi, Balance as IndexerBalance } from "namada-indexer-client";
 import { shouldUpdateBalanceAtom } from "./etc";
 
 const {

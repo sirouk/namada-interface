@@ -1,11 +1,11 @@
-import BigNumber from "bignumber.js";
-import { atomWithQuery } from "jotai-tanstack-query";
 import {
   DefaultApi,
   Bond as IndexerBond,
   Validator as IndexerValidator,
   VotingPower as IndexerVotingPower,
-} from "namada-indexer-client";
+} from "@anomaorg/namada-indexer-client";
+import BigNumber from "bignumber.js";
+import { atomWithQuery } from "jotai-tanstack-query";
 import { transparentAccountsAtom } from "./accounts";
 import { shouldUpdateBalanceAtom } from "./etc";
 

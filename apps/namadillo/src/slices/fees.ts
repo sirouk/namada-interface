@@ -1,9 +1,9 @@
+import { DefaultApi } from "@anomaorg/namada-indexer-client";
 import BigNumber from "bignumber.js";
 import { getSdkInstance } from "hooks";
 import invariant from "invariant";
 import { atom } from "jotai";
 import { atomWithQuery } from "jotai-tanstack-query";
-import { DefaultApi } from "namada-indexer-client";
 import { accountsAtom } from "slices/accounts";
 import { chainAtom } from "slices/chain";
 
