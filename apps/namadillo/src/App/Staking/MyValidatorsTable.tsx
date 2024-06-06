@@ -1,5 +1,5 @@
 import { ActionButton, TableRow } from "@namada/components";
-import { formatPercentage, shortenAddress } from "@namada/utils";
+import { formatPercentage } from "@namada/utils";
 import { FiatCurrency } from "App/Common/FiatCurrency";
 import { NamCurrency } from "App/Common/NamCurrency";
 import { WalletAddress } from "App/Common/WalletAddress";
@@ -48,12 +48,6 @@ export const MyValidatorsTable = (): JSX.Element => {
           validator={validator}
           showAddress={false}
         />,
-        <strong
-          className="font-medium"
-          key={`my-validator-alias-${validator.address}`}
-        >
-          {validator.alias || shortenAddress(validator.address, 8, 6)}
-        </strong>,
         <WalletAddress
           key={`address-${validator.address}`}
           address={validator.address}
