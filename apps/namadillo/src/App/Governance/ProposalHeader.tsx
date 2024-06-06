@@ -64,15 +64,6 @@ export const ProposalHeader: React.FC<ProposalHeaderProps> = (props) => {
   const totalProgress = proposal.endTime - proposal.startTime;
   const currentProgress = proposal.currentTime - proposal.startTime;
 
-  console.log(
-    "totalProgress",
-    totalProgress,
-    "currentProgress",
-    currentProgress,
-    "%",
-    (currentProgress / totalProgress) * 100
-  );
-
   return (
     <>
       <div className="flex mb-5">
