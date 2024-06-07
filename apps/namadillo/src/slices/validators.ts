@@ -11,8 +11,16 @@ import {
   UndefinedInitialDataOptions,
   atomWithQuery,
 } from "jotai-tanstack-query";
+<<<<<<< HEAD
 import { transparentAccountsAtom } from "./accounts";
 import { chainParametersAtom } from "./chainParameters";
+||||||| daf2839c
+import { transparentAccountsAtom } from "./accounts";
+import { chainAtom } from "./chain";
+=======
+import { defaultAccountAtom } from "slices/accounts";
+import { chainAtom } from "./chain";
+>>>>>>> main
 import { shouldUpdateBalanceAtom } from "./etc";
 
 type Unique = {
@@ -87,14 +95,57 @@ export const allValidatorsAtom = atomWithQuery((get) => {
   };
 });
 
+<<<<<<< HEAD
 export const myValidatorsAtom = atomWithQuery<MyValidator[]>((get) => {
   const chainParameters = get(chainParametersAtom);
   const accounts = get(transparentAccountsAtom);
   const ids = accounts.map((account) => account.address).join("-");
+||||||| daf2839c
+export const allValidatorsAtom = atomWithQuery((get) => ({
+  queryKey: ["all-validators"],
+  queryFn: async () => {
+    const { rpc } = get(chainAtom);
+    const query = new Query(rpc);
+    const queryResult =
+      (await query.query_all_validator_addresses()) as string[];
+    return queryResult.map(toValidator);
+  },
+}));
+
+// eslint-disable-next-line
+export const myValidatorsAtom = atomWithQuery((get) => {
+  const accounts = get(transparentAccountsAtom);
+  const ids = accounts.map((account) => account.address).join("-");
+=======
+export const allValidatorsAtom = atomWithQuery((get) => ({
+  queryKey: ["all-validators"],
+  queryFn: async () => {
+    const { rpc } = get(chainAtom);
+    const query = new Query(rpc);
+    const queryResult =
+      (await query.query_all_validator_addresses()) as string[];
+    return queryResult.map(toValidator);
+  },
+}));
+
+// eslint-disable-next-line
+export const myValidatorsAtom = atomWithQuery((get) => {
+  const account = get(defaultAccountAtom);
+
+>>>>>>> main
   // TODO: Refactor after this event subscription is enabled in the indexer
   const enablePolling = get(shouldUpdateBalanceAtom);
+
   return {
+<<<<<<< HEAD
+||||||| daf2839c
+    queryKey: ["my-validators", ids],
+=======
+    queryKey: ["my-validators", account.data?.address],
+    enabled: account.isSuccess,
+>>>>>>> main
     refetchInterval: enablePolling ? 1000 : false,
+<<<<<<< HEAD
     queryKey: ["my-validators", ids, chainParameters.dataUpdatedAt],
     queryFn: async () => {
       const unbondingPeriod =
@@ -115,6 +166,22 @@ export const myValidatorsAtom = atomWithQuery<MyValidator[]>((get) => {
         totalVotingPowerResponse.data,
         unbondingPeriod
       );
+||||||| daf2839c
+    queryFn: async (): Promise<MyValidator[]> => {
+      const { rpc } = get(chainAtom);
+      const addresses = accounts.map((account) => account.address);
+      const query = new Query(rpc);
+      const myValidatorsRes = await query.query_my_validators(addresses);
+      return myValidatorsRes.map(toMyValidators);
+=======
+    queryFn: async (): Promise<MyValidator[]> => {
+      const { rpc } = get(chainAtom);
+      const query = new Query(rpc);
+      const myValidatorsRes = await query.query_my_validators([
+        account.data?.address,
+      ]);
+      return myValidatorsRes.map(toMyValidators);
+>>>>>>> main
     },
   };
 });
