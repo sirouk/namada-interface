@@ -10,9 +10,6 @@ require("dotenv").config({ path: resolve(__dirname, ".env") });
 
 const { NODE_ENV } = process.env;
 
-const ASSET_PATH =
-  NODE_ENV === "development" ? "/" : "https://faucet.heliax.click/";
-
 const createStyledComponentsTransformer =
   require("typescript-plugin-styled-components").default;
 
@@ -63,7 +60,7 @@ module.exports = {
     faucet: "./src",
   },
   output: {
-    publicPath: ASSET_PATH,
+    publicPath: "./",
     path: resolve(__dirname, `./build/`),
     filename: "[name].bundle.js",
   },
@@ -121,7 +118,7 @@ module.exports = {
           {
             loader: require.resolve("file-loader"),
             options: {
-              name: "assets/[name].[hash].[ext]",
+              name: "./assets/[name].[hash].[ext]",
             },
           },
         ],

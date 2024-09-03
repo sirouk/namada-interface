@@ -12,6 +12,7 @@
     "dev": "NODE_ENV=development yarn start",
     "dev:proxy": "./scripts/start-proxy.sh; NAMADA_INTERFACE_PROXY=true yarn dev",
     "build": "NODE_ENV=production webpack-cli",
+    "build:dev": "NODE_ENV=development webpack-cli",
     "lint": "eslint src --ext .ts,.tsx",
     "lint:fix": "yarn lint -- --fix"
   },
@@ -35,7 +36,7 @@
     "@types/react-dom": "^17.0.11",
     "@types/styled-components": "^5.1.26",
     "dotenv": "^16.0.3",
-    "eslint": "^8.49.0",
+    "eslint": "^9.0.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-import-resolver-typescript": "^3.5.0",
     "eslint-plugin-import": "^2.27.5",
