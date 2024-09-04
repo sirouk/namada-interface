@@ -65,6 +65,7 @@ const getTxProps = (
 export const isPublicKeyRevealed = async (
   address: Address
 ): Promise<boolean> => {
+  const asd = 1;
   const api = getIndexerApi();
   let publicKey: string | undefined;
   try {
