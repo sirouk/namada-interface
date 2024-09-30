@@ -1,5 +1,5 @@
-import initSdk from "@heliax/namada-sdk/inline-init";
-import { getSdk, Sdk } from "@heliax/namada-sdk/web";
+import initSdk from "@heliaxdev/namada-sdk/inline-init";
+import { getSdk, Sdk } from "@heliaxdev/namada-sdk/web";
 import { nativeTokenAddressAtom } from "atoms/chain";
 import { rpcUrlAtom } from "atoms/settings";
 import { getDefaultStore, useAtomValue } from "jotai";
