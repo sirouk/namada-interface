@@ -1,5 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import { Example } from "./Example";
+import { ExampleFromNamada } from "./ExampleFromNamada";
 import { MaspOverview } from "./MaspOverview";
 import { NamTransfer } from "./NamTransfer";
 import { Shield } from "./Shield";
@@ -23,6 +24,10 @@ export const Transfer: React.FC = () => (
         element={<ShieldAll />}
       />
       <Route path={TransferRoutes.example().toString()} element={<Example />} />
+      <Route
+        path={TransferRoutes.exampleFromNamada().toString()}
+        element={<ExampleFromNamada />}
+      />
     </Routes>
   </main>
 );
