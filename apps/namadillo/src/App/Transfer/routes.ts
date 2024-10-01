@@ -16,6 +16,9 @@ export const shieldAll = (): RouteOutput => routeOutput(`/shield-all`);
 
 export const example = (): RouteOutput => routeOutput(`/example`);
 
+export const exampleFromNamada = (): RouteOutput =>
+  routeOutput(`/example-from-namada`);
+
 export default {
   index,
   overview,
@@ -24,4 +27,5 @@ export default {
   shield,
   shieldAll,
   example,
+  exampleFromNamada,
 };
